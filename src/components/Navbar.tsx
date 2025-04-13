@@ -1,31 +1,52 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Vote } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Authentication", path: "/auth" },
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Traceability", path: "/traceability" },
+    { name: "Admin", path: "/admin" },
+    { name: "Engagement", path: "/engagement" },
+    { name: "Demo", path: "/demo" }
+  ];
 
   return (
     <nav className="fixed w-full z-50 bg-guardian-dark/90 backdrop-blur-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-guardian-teal flex items-center justify-center">
-            <span className="text-white font-bold text-lg">G</span>
-          </div>
-          <span className="text-white font-bold text-xl">Guardian-IO Nexus™</span>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="h-8 w-8 rounded-full bg-guardian-teal flex items-center justify-center">
+              <span className="text-white font-bold text-lg">G</span>
+            </div>
+            <span className="text-white font-bold text-xl">Guardian-IO Nexus™</span>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          <a href="#dashboard" className="text-white/80 hover:text-white transition-colors">Dashboard</a>
-          <a href="#map" className="text-white/80 hover:text-white transition-colors">Map</a>
-          <a href="#verification" className="text-white/80 hover:text-white transition-colors">Verification</a>
-          <a href="#impact" className="text-white/80 hover:text-white transition-colors">Impact</a>
-          <Button variant="outline" className="text-guardian-teal border-guardian-teal hover:bg-guardian-teal hover:text-white">
-            Partner Login
-          </Button>
+        <div className="hidden md:flex items-center space-x-4">
+          {navItems.map((item) => (
+            <Link 
+              key={item.name}
+              to={item.path} 
+              className="text-white/80 hover:text-white transition-colors px-2"
+            >
+              {item.name}
+            </Link>
+          ))}
+          <Link to="/vote">
+            <Button variant="outline" className="text-guardian-teal border-guardian-teal hover:bg-guardian-teal hover:text-white flex items-center gap-2">
+              <Vote size={16} />
+              Vote
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -44,42 +65,25 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-guardian-dark/95 backdrop-blur-md">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            <a 
-              href="#dashboard" 
-              className="text-white/80 hover:text-white transition-colors py-2 border-b border-white/10"
+          <div className="container mx-auto px-4 py-4 flex flex-col space-y-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="text-white/80 hover:text-white transition-colors py-2 border-b border-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Link 
+              to="/vote" 
+              className="flex items-center gap-2 text-guardian-teal py-2"
               onClick={() => setIsOpen(false)}
             >
-              Dashboard
-            </a>
-            <a 
-              href="#map" 
-              className="text-white/80 hover:text-white transition-colors py-2 border-b border-white/10"
-              onClick={() => setIsOpen(false)}
-            >
-              Map
-            </a>
-            <a 
-              href="#verification" 
-              className="text-white/80 hover:text-white transition-colors py-2 border-b border-white/10"
-              onClick={() => setIsOpen(false)}
-            >
-              Verification
-            </a>
-            <a 
-              href="#impact" 
-              className="text-white/80 hover:text-white transition-colors py-2 border-b border-white/10"
-              onClick={() => setIsOpen(false)}
-            >
-              Impact
-            </a>
-            <Button 
-              variant="outline" 
-              className="text-guardian-teal border-guardian-teal hover:bg-guardian-teal hover:text-white w-full"
-              onClick={() => setIsOpen(false)}
-            >
-              Partner Login
-            </Button>
+              <Vote size={16} />
+              Vote on Features
+            </Link>
           </div>
         </div>
       )}
