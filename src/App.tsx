@@ -13,6 +13,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Engagement from "./pages/Engagement";
 import DemoArea from "./pages/DemoArea";
 import VotingPage from "./pages/VotingPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -25,13 +26,33 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Authentication />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/traceability" element={<Traceability />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/engagement" element={<Engagement />} />
+          
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/traceability" element={
+            <ProtectedRoute>
+              <Traceability />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/engagement" element={
+            <ProtectedRoute>
+              <Engagement />
+            </ProtectedRoute>
+          } />
+          
           <Route path="/demo" element={<DemoArea />} />
           <Route path="/vote" element={<VotingPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

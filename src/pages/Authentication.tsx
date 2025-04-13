@@ -2,23 +2,25 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AuthModules from '@/components/auth/AuthModules';
+import AuthLayout from '@/components/auth/AuthLayout';
+import LoginForm from '@/components/auth/LoginForm';
+import SignupForm from '@/components/auth/SignupForm';
+import DemoLoginForm from '@/components/auth/DemoLoginForm';
+import { useLocation } from 'react-router-dom';
 
 const Authentication = () => {
+  const location = useLocation();
+  const defaultTab = location.state?.tab || "login";
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-guardian-dark mb-4">Authentication & Access Control</h1>
-            <p className="text-guardian-gray max-w-2xl mx-auto">
-              Secure login options, role-based access, and identity management for the Guardian-IO ecosystem.
-            </p>
-          </div>
-          
-          <AuthModules />
-        </div>
+      <main className="flex-grow pt-16">
+        <AuthLayout defaultTab={defaultTab}>
+          <LoginForm />
+          <SignupForm />
+          <DemoLoginForm />
+        </AuthLayout>
       </main>
       <Footer />
     </div>
